@@ -35,7 +35,6 @@ const getListFromIdPath = (obj, id) => {
     }
     return p;
   }, []);
-  console.log(oPath);
   return oPath;
 };
 

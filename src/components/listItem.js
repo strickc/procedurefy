@@ -51,7 +51,11 @@ class ListItem extends Component {
                 </span>
               </div>
               <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
-                <SubList item={this.props.item} listSettings={this.props.listSettings} handleChange={this.props.handleChange} />
+                <SubList
+                  item={this.props.item}
+                  listSettings={this.props.listSettings}
+                  handleChange={this.props.handleChange}
+                />
               </div>
             </div>
             {provided.placeholder}
