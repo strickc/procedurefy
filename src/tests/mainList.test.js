@@ -1,6 +1,6 @@
 /* global test, expect */
-import React from 'react';
-import { keyPath } from '../components/mainList';
+// import React from 'react';
+// import { keyPath } from '../components/mainList';
 
 test('Link changes the class when hovered', () => {
   // const procedure = {

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import SubList from './subList';
+import TextEdit from './textEdit';
 import { levColors } from './helpers/styles';
+import { listSettingsSchema } from './helpers/schemas';
 
 const grid = 8;
 const getItemStyle = (isDragging, draggableStyle, level) => ({
@@ -42,8 +44,15 @@ class ListItem extends Component {
                 this.props.item.level,
               )}
             >
-              <div style={{ padding: `0 0 ${grid * 0}px 0` }}>{this.props.item.content}</div>
-              <div style={{ padding: `0 0 0 ${grid}px` }}>{SubList(this.props.item)}</div>
+              <div style={{ padding: `0 0 ${grid * 0}px 0` }}>
+                <span className="inline">1.1</span>
+                <span className="inline">
+                  <TextEdit item={this.props.item} handleChange={this.props.handleChange} />
+                </span>
+              </div>
+              <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
+                <SubList item={this.props.item} listSettings={this.props.listSettings} handleChange={this.props.handleChange} />
+              </div>
             </div>
             {provided.placeholder}
           </div>
@@ -59,6 +68,8 @@ ListItem.propTypes = {
     level: PropTypes.number,
     subList: PropTypes.array,
   }).isRequired,
+  listSettings: PropTypes.shape(listSettingsSchema).isRequired,
   index: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 export default ListItem;
