@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { Dropdown } from 'semantic-ui-react';
 import SubList from './subList';
 import './styles.css';
+import util from './helpers/utilities';
 
 const updateSubPaths = (obj, path) => {
   obj.path.splice(0, path.length, ...path);
@@ -15,54 +16,21 @@ const updateSubPaths = (obj, path) => {
   }
 };
 
-/**
- * Get an array of procedure object keys and indexes that constitute a path
- * to the object where the droppable subList resides in the structure.  Can
- * be used with _.get to access the subList
- * @param {Object} obj state procedure object to search
- * @param {String} id id of the droppable, hyphen-seperated string of keys
- */
-const getListFromIdPath = (obj, id) => {
-  const path = id.split('-');
-  let cur = obj.subList;
-  const oPath = path.reduce((p, c, i) => {
-    if (i === 0) {
-      p.push('subList');
-    } else {
-      const ind = _.findIndex(cur, ['key', c]);
-      cur = cur[ind].subList;
-      p.push(ind, 'subList');
-    }
-    return p;
-  }, []);
-  return oPath;
-};
-
-const makeUpdateObj = (procedure, path, op, opValue) => {
-  const obj = {};
-  let ref = obj;
-  for (let i = 0; i < path.length; i += 1) {
-    ref[path[i]] = {};
-    ref = ref[path[i]];
-  }
-  ref[op] = opValue;
-  return obj;
-};
-// a little function to help us with reordering the result
+// reorder the result of a drag
 export const reorder = (procedure, source, destination) => {
-  const spath = getListFromIdPath(procedure, source.droppableId);
+  const spath = util.getListFromIdPath(procedure, source.droppableId);
   const sourceList = _.get(procedure, spath);
   const moveObj = sourceList[source.index];
-  const supdate = makeUpdateObj(procedure, spath, '$splice', [[source.index, 1]]);
+  const supdate = util.makeUpdateObj(procedure, spath, '$splice', [[source.index, 1]]);
   const dsplice = [destination.index, 0, moveObj];
   // const dupdate = makeUpdateObj(procedure, dpath, [destination.index, 0, moveObj]);
   const totupdate = supdate;
   if (source.droppableId === destination.droppableId) {
     _.get(totupdate, spath).$splice.push(dsplice);
   } else {
-    const dpath = getListFromIdPath(procedure, destination.droppableId);
+    const dpath = util.getListFromIdPath(procedure, destination.droppableId);
     updateSubPaths(dsplice[2], destination.droppableId.split('-'));
-    _.defaultsDeep(totupdate, makeUpdateObj(procedure, dpath, '$splice', [dsplice]));
+    _.defaultsDeep(totupdate, util.makeUpdateObj(procedure, dpath, '$splice', [dsplice]));
   }
   return update(procedure, totupdate);
 };
@@ -121,9 +89,8 @@ class MainList extends Component {
     });
   }
   handleChange(idPath, value) {
-    const path = getListFromIdPath(this.state.procedure, idPath);
-    path[path.length - 1] = 'content';
-    const updateObj = makeUpdateObj(this.state.procedure, path, '$set', value);
+    const path = util.getListFromIdPath(this.state.procedure, idPath, 'content');
+    const updateObj = util.makeUpdateObj(this.state.procedure, path, '$set', value);
     this.setState({ procedure: update(this.state.procedure, updateObj) });
   }
   render() {
