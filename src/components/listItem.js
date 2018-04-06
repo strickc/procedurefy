@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
@@ -16,52 +16,43 @@ const getItemStyle = (isDragging, draggableStyle, level) => ({
   margin: `0 0 ${grid / 4}px 0`,
   border: '1px solid black',
   borderRadius: '3px',
-
   // change background colour if dragging
-  // background: isDragging ? 'lightyellow' : levColors[level],
   background: levColors[level],
-
   // styles we need to apply on draggables
   ...draggableStyle,
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
-class ListItem extends Component {
-  render() {
-    const {
-      id, level,
-    } = this.props.item;
-    return (
-      <Draggable draggableId={String(id)} index={this.props.index} type={level}>
-        {(provided, snapshot) => (
-          <div>
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={getItemStyle(
-                snapshot.isDragging,
-                provided.draggableProps.style,
-                level,
-              )}
-            >
-              <div style={{ padding: `0 0 ${grid * 0}px 0` }}>
-                <span className="inline">1.1</span>
-                <span className="inline">
-                  <TextEdit item={this.props.item} handleChange={this.props.handleChange} />
-                </span>
-              </div>
-              <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
-                <SubListContainer forId={id} />
-              </div>
-            </div>
-            {provided.placeholder}
+const ListItem = ({ index, item, handleChange }) => (
+  <Draggable draggableId={String(item.id)} index={index} type={item.level}>
+    {(provided, snapshot) => (
+      <div>
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={getItemStyle(
+            snapshot.isDragging,
+            provided.draggableProps.style,
+            item.level,
+          )}
+        >
+          <div style={{ padding: `0 0 ${grid * 0}px 0` }}>
+            <span className="inline">1.1</span>
+            <span className="inline">
+              <TextEdit item={item} handleChange={handleChange} />
+            </span>
           </div>
-        )}
-      </Draggable>
-    );
-  }
-}
+          <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
+            <SubListContainer forId={item.id} />
+          </div>
+        </div>
+        {provided.placeholder}
+      </div>
+    )}
+  </Draggable>
+);
+
 ListItem.propTypes = {
   item: PropTypes.shape(Schemas.item).isRequired,
   index: PropTypes.number.isRequired,

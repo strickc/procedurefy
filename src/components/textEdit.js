@@ -2,20 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { levColors } from './helpers/styles';
 import { itemSchema } from './helpers/schemas';
-import util from './helpers/utilities';
 
 const getItemStyle = level => ({
-  // some basic styles to make the items look a bit nicer
   width: '100%',
   padding: 0,
   border: 'none',
-
   // change background colour if dragging
-  // background: isDragging ? 'lightyellow' : levColors[level],
   background: levColors[level],
 });
 
-// eslint-disable-next-line react/prefer-stateless-function
 class TextEdit extends Component {
   constructor(props) {
     super(props);
