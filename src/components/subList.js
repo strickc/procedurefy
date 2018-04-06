@@ -1,11 +1,10 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import get from 'lodash/get';
-import update from 'immutability-helper';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ListItem from './listItem';
 import { levColors } from './helpers/styles';
-import { itemSchema, listSettingsSchema } from './helpers/schemas';
 
 const getListStyle = (isDraggingOver, level) => ({
   background: isDraggingOver ? 'springgreen' : levColors[level],
@@ -14,29 +13,25 @@ const getListStyle = (isDraggingOver, level) => ({
   // width: 250,
 });
 
-const pathIdGen = node => update(node.path, { $push: [node.key] }).join('-');
+// const pathIdGen = node => update(node.path, { $push: [node.key] }).join('-');
 
 const padding = (show, level) => (show ? <div style={getListStyle(false, level)} /> : null);
 
-export default class SubList extends React.Component {
+export class SubList extends React.Component {
   render() {
-    const { item } = this.props;
-    const { showLevel } = this.props.listSettings;
-    if ((item.level + 1) <= showLevel) {
+    const { listHolder, showLevel } = this.props;
+    if (true) { // (listHolder.level + 1) <= showLevel) {
       return (
-        <Droppable droppableId={pathIdGen(item)} type={item.level + 1}>
+        <Droppable droppableId={String(listHolder.id)} type={listHolder.level + 1}>
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver, item.level)}
+              style={getListStyle(snapshot.isDraggingOver, listHolder.level)}
             >
-              {padding(get(item, 'subList', []).length * item.level, item.level)}
-              {get(item, 'subList', []).map((i, index) => (
+              {padding(get(listHolder, 'subList', []).length * listHolder.level, listHolder.level)}
+              {get(listHolder, 'subList', []).map((i, index) => (
                 <ListItem
-                  key={i.key}
-                  item={i} index={index}
-                  listSettings={this.props.listSettings}
-                  handleChange={this.props.handleChange}
+                  key={i} itemId={i} index={index}
                 />
               ))}
             </div>
@@ -45,11 +40,34 @@ export default class SubList extends React.Component {
       );
     }
     // otherwise placeholder for the height for the Droppable
-    return padding(true, item.level);
+    return padding(true, listHolder.level);
   }
 }
-SubList.propTypes = {
-  item: PropTypes.shape(itemSchema).isRequired,
-  listSettings: PropTypes.shape(listSettingsSchema).isRequired,
-  handleChange: PropTypes.func.isRequired,
+// SubList.propTypes = {
+// forId: PropTypes.string.isRequired,
+// item: PropTypes.shape(itemSchema).isRequired,
+// listSettings: PropTypes.shape(listSettingsSchema).isRequired,
+// handleChange: PropTypes.func.isRequired,
+// };
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    listHolder: state.procedure.list[ownProps.forId],
+    showLevel: state.visibilityFiler,
+  };
 };
+// const mapDispatchToProps = dispatch => ({
+//   onDragEnd: (result) => {
+//     dispatch(moveItem(result.source, result.destination));
+//   },
+//   onListChanged: (filter) => {
+//     dispatch(setVisibilityFilter(filter));
+//   },
+// });
+const SubListContainer = connect(
+  mapStateToProps,
+  // mapDispatchToProps,
+)(SubList);
+
+export default SubListContainer;
+

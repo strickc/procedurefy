@@ -4,13 +4,14 @@ import _ from 'lodash';
 import {
   ADD_ITEM,
   MOVE_ITEM,
+  SET_CONTENT,
   SET_VISIBILITY_FILTER,
   VisibilityFilters,
 } from './actions';
 
-const { OVERVIEW } = VisibilityFilters;
+const { SECTIONS } = VisibilityFilters;
 
-function visibilityFilter(state = OVERVIEW, action) {
+function visibilityFilter(state = SECTIONS, action) {
   switch (action.type) {
     case SET_VISIBILITY_FILTER:
       return action.filter;
@@ -21,20 +22,19 @@ function visibilityFilter(state = OVERVIEW, action) {
 
 const itemGen = (id, state, parentKey, content) => {
   const { level } = state.list[parentKey];
-  return ({
+  return {
     id,
     content,
     level: level + 1,
     subList: [],
-  });
+  };
 };
 
 const initProcState = {
   settings: { maxId: 0 },
   list: {
     0: {
-      level: 0,
-      subList: [],
+      id: 0, level: 0, subList: [],
     },
   },
 };
@@ -78,14 +78,26 @@ function procedure(state = initProcState, action) {
       }
       return update(state, uObj);
     }
+    case SET_CONTENT: {
+      const { content, itemId } = action;
+      return update(state, {
+        list: {
+          [itemId]: {
+            content: {
+              $set: content,
+            },
+          },
+        },
+      });
+    }
     default:
       return state;
   }
 }
 
-const todoApp = combineReducers({
+const procedurefyApp = combineReducers({
   visibilityFilter,
   procedure,
 });
 
-export default todoApp;
+export default procedurefyApp;

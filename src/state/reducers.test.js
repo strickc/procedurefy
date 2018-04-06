@@ -1,17 +1,17 @@
 /* global test, describe, beforeEach, expect */
 import { createStore } from 'redux';
-import todoApp from './reducers';
+import procedurefyApp from './reducers';
 import { VisibilityFilters, addItem, moveItem } from './actions';
 
 describe('Store reducers tests', () => {
   let store;
   const list = () => store.getState().procedure.list;
   beforeEach(() => {
-    store = createStore(todoApp);
+    store = createStore(procedurefyApp);
   }, 1000);
   test('Initial generation of store', () => {
     const state = store.getState();
-    expect(state.visibilityFilter).toEqual(VisibilityFilters.OVERVIEW);
+    expect(state.visibilityFilter).toEqual(VisibilityFilters.SECTIONS);
     expect(state.procedure.list['0'].subList.length).toEqual(0);
   });
   test('adding items', () => {

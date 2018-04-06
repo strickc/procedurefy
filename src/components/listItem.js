@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
-import SubList from './subList';
+import SubListContainer from './subList';
+import { connect } from 'react-redux';
 import TextEdit from './textEdit';
 import { levColors } from './helpers/styles';
 import { listSettingsSchema } from './helpers/schemas';
+import { setContent } from '../state/actions';
 
 const grid = 8;
 const getItemStyle = (isDragging, draggableStyle, level) => ({
@@ -26,12 +28,11 @@ const getItemStyle = (isDragging, draggableStyle, level) => ({
 // eslint-disable-next-line react/prefer-stateless-function
 class ListItem extends Component {
   render() {
+    const {
+      id, content, index, level,
+    } = this.props.item;
     return (
-      <Draggable
-        draggableId={this.props.item.key}
-        index={this.props.index}
-        type={this.props.item.level}
-      >
+      <Draggable draggableId={id} index={index} type={level}>
         {(provided, snapshot) => (
           <div>
             <div
@@ -41,7 +42,7 @@ class ListItem extends Component {
               style={getItemStyle(
                 snapshot.isDragging,
                 provided.draggableProps.style,
-                this.props.item.level,
+                level,
               )}
             >
               <div style={{ padding: `0 0 ${grid * 0}px 0` }}>
@@ -51,11 +52,7 @@ class ListItem extends Component {
                 </span>
               </div>
               <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
-                <SubList
-                  item={this.props.item}
-                  listSettings={this.props.listSettings}
-                  handleChange={this.props.handleChange}
-                />
+                <SubListContainer forId={id} />
               </div>
             </div>
             {provided.placeholder}
@@ -65,15 +62,27 @@ class ListItem extends Component {
     );
   }
 }
-ListItem.propTypes = {
-  item: PropTypes.shape({
-    key: PropTypes.string,
-    content: PropTypes.string,
-    level: PropTypes.number,
-    subList: PropTypes.array,
-  }).isRequired,
-  listSettings: PropTypes.shape(listSettingsSchema).isRequired,
-  index: PropTypes.number.isRequired,
-  handleChange: PropTypes.func.isRequired,
-};
-export default ListItem;
+// ListItem.propTypes = {
+//   item: PropTypes.shape({
+//     key: PropTypes.string,
+//     content: PropTypes.string,
+//     level: PropTypes.number,
+//     subList: PropTypes.array,
+//   }).isRequired,
+//   listSettings: PropTypes.shape(listSettingsSchema).isRequired,
+//   index: PropTypes.number.isRequired,
+//   handleChange: PropTypes.func.isRequired,
+// };
+
+const mapStateToProps = (state, ownProps) => ({
+  item: state.procedure.list[ownProps.itemId],
+  showLevel: state.visibilityFiler,
+});
+const mapDispatchToProps = dispatch => ({
+  handleChange: (content, itemId) => {
+    dispatch(setContent(content, itemId));
+  },
+});
+const ListItemContainer = connect(mapStateToProps, mapDispatchToProps)(ListItem);
+
+export default ListItemContainer;

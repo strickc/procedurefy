@@ -23,7 +23,7 @@ class TextEdit extends Component {
   }
   textUpdate(event) {
     const { value } = event.target;
-    return this.props.handleChange(util.pathIdGen(this.props.item), value);
+    return this.props.handleChange(value, this.props.item.id);
   }
   render() {
     return (
