@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
-import SubListContainer from './subList';
 import { connect } from 'react-redux';
+import SubListContainer from './subList';
 import TextEdit from './textEdit';
 import { levColors } from './helpers/styles';
-import { listSettingsSchema } from './helpers/schemas';
+import Schemas from './helpers/schemas';
 import { setContent } from '../state/actions';
 
 const grid = 8;
@@ -29,7 +29,7 @@ const getItemStyle = (isDragging, draggableStyle, level) => ({
 class ListItem extends Component {
   render() {
     const {
-      id, content, level,
+      id, level,
     } = this.props.item;
     return (
       <Draggable draggableId={String(id)} index={this.props.index} type={level}>
@@ -62,17 +62,11 @@ class ListItem extends Component {
     );
   }
 }
-// ListItem.propTypes = {
-//   item: PropTypes.shape({
-//     key: PropTypes.string,
-//     content: PropTypes.string,
-//     level: PropTypes.number,
-//     subList: PropTypes.array,
-//   }).isRequired,
-//   listSettings: PropTypes.shape(listSettingsSchema).isRequired,
-//   index: PropTypes.number.isRequired,
-//   handleChange: PropTypes.func.isRequired,
-// };
+ListItem.propTypes = {
+  item: PropTypes.shape(Schemas.item).isRequired,
+  index: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state, ownProps) => ({
   item: state.procedure.list[ownProps.itemId],

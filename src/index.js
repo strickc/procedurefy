@@ -14,6 +14,8 @@ store.dispatch(addItem('Item 1'));
 store.dispatch(addItem('Item 2'));
 store.dispatch(addItem('Item 3'));
 store.dispatch(addItem('Item 4'));
+store.dispatch(addItem('Item 1-1', 1));
+store.dispatch(addItem('Item 2-1', 2));
 
 ReactDOM.render(
   <Provider store={store}>

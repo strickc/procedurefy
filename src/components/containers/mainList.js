@@ -25,7 +25,7 @@ class MainList extends Component {
   render() {
     return (
       <DragDropContext onDragStart={start} onDragEnd={this.props.onDragEnd}>
-        <Dropdown placeholder="Show level" selection options={levels} onChange={this.props.onListChanged} />
+        <Dropdown placeholder="Show level" selection options={levels} value={this.props.visibilityFilter} onChange={this.props.onListChanged} />
         <SubListContainer forId="0" />
       </DragDropContext>
     );
@@ -34,23 +34,23 @@ class MainList extends Component {
 MainList.propTypes = {
   onDragEnd: PropTypes.func.isRequired,
   onListChanged: PropTypes.func.isRequired,
+  visibilityFilter: PropTypes.number.isRequired,
 };
 
 
-// const mapStateToProps = state => ({
-//   todos: getVisibleTodos(state.todos, state.visibilityFilter),
-// });
+const mapStateToProps = state => ({
+  visibilityFilter: state.visibilityFilter,
+});
 const mapDispatchToProps = dispatch => ({
   onDragEnd: (result) => {
-    console.log(result);
     dispatch(moveItem(result.source, result.destination));
   },
-  onListChanged: (filter) => {
-    dispatch(setVisibilityFilter(filter));
+  onListChanged: (event, data) => {
+    dispatch(setVisibilityFilter(data.value));
   },
 });
 const MainListContainer = connect(
-  null, // mapStateToProps
+  mapStateToProps,
   mapDispatchToProps,
 )(MainList);
 

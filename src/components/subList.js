@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ListItem from './listItem';
 import { levColors } from './helpers/styles';
+import Schemas from './helpers/schemas';
 
 const getListStyle = (isDraggingOver, level) => ({
   background: isDraggingOver ? 'springgreen' : levColors[level],
@@ -20,8 +21,8 @@ const padding = (show, level) => (show ? <div style={getListStyle(false, level)}
 export class SubList extends React.Component {
   render() {
     const { listHolder, showLevel } = this.props;
-    if (true) {
-      // (listHolder.level + 1) <= showLevel) {
+    console.log(showLevel, listHolder.level);
+    if ((listHolder.level + 1) <= showLevel) {
       return (
         <Droppable droppableId={String(listHolder.id)} type={listHolder.level + 1}>
           {(provided, snapshot) => (
@@ -42,28 +43,17 @@ export class SubList extends React.Component {
     return padding(true, listHolder.level);
   }
 }
-// SubList.propTypes = {
-// forId: PropTypes.string.isRequired,
-// item: PropTypes.shape(itemSchema).isRequired,
-// listSettings: PropTypes.shape(listSettingsSchema).isRequired,
-// handleChange: PropTypes.func.isRequired,
-// };
+SubList.propTypes = {
+  listHolder: PropTypes.shape(Schemas.item).isRequired,
+  showLevel: PropTypes.number.isRequired,
+};
 
 const mapStateToProps = (state, ownProps) => ({
   listHolder: state.procedure.list[ownProps.forId],
-  showLevel: state.visibilityFiler,
+  showLevel: state.visibilityFilter,
 });
-// const mapDispatchToProps = dispatch => ({
-//   onDragEnd: (result) => {
-//     dispatch(moveItem(result.source, result.destination));
-//   },
-//   onListChanged: (filter) => {
-//     dispatch(setVisibilityFilter(filter));
-//   },
-// });
 const SubListContainer = connect(
   mapStateToProps,
-  // mapDispatchToProps,
 )(SubList);
 
 export default SubListContainer;
