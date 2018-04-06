@@ -16,7 +16,7 @@ const getListStyle = (isDraggingOver, level) => ({
 
 const padding = (show, level) => (show ? <div style={getListStyle(false, level)} /> : null);
 
-export const SubList = ({ listHolder, showLevel }) => {
+export const SubList = ({ listHolder, showLevel, parentNum }) => {
   if ((listHolder.level + 1) <= showLevel) {
     return (
       <Droppable droppableId={String(listHolder.id)} type={listHolder.level + 1}>
@@ -27,7 +27,7 @@ export const SubList = ({ listHolder, showLevel }) => {
           >
             {padding(get(listHolder, 'subList', []).length * listHolder.level, listHolder.level)}
             {get(listHolder, 'subList', []).map((i, index) => (
-              <ListItem key={i} itemId={i} index={index} />
+              <ListItem key={i} itemId={i} index={index} parentNum={parentNum} />
             ))}
           </div>
         )}
@@ -41,11 +41,13 @@ export const SubList = ({ listHolder, showLevel }) => {
 SubList.propTypes = {
   listHolder: PropTypes.shape(Schemas.item).isRequired,
   showLevel: PropTypes.number.isRequired,
+  parentNum: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   listHolder: state.procedure.list[ownProps.forId],
   showLevel: state.visibilityFilter,
+  parentNum: ownProps.parentNum,
 });
 const SubListContainer = connect(
   mapStateToProps,

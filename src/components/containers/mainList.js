@@ -15,7 +15,7 @@ const levels = [
 const MainList = props => (
   <DragDropContext onDragEnd={props.onDragEnd}>
     <Dropdown placeholder="Show level" selection options={levels} value={props.visibilityFilter} onChange={props.onListChanged} />
-    <SubListContainer forId="0" />
+    <SubListContainer forId="0" parentNum="" />
   </DragDropContext>
 );
 

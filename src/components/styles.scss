@@ -5,3 +5,15 @@
 .full {
   width: 100%;
 }
+
+.line-content {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  > .number-box {
+    flex-grow: 1;
+  }
+  > .content-box {
+    flex-grow: 15;
+  }
+}

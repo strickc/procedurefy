@@ -23,46 +23,49 @@ const getItemStyle = (isDragging, draggableStyle, level) => ({
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
-const ListItem = ({ index, item, handleChange }) => (
-  <Draggable draggableId={String(item.id)} index={index} type={item.level}>
-    {(provided, snapshot) => (
-      <div>
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style,
-            item.level,
-          )}
-        >
-          <div style={{ padding: `0 0 ${grid * 0}px 0` }}>
-            <span className="inline">1.1</span>
-            <span className="inline">
-              <TextEdit item={item} handleChange={handleChange} />
-            </span>
+const ListItem = ({
+  index, item, handleChange, parentNum,
+}) => {
+  const itemNum = `${parentNum}${(parentNum.length ? '.' : '')}${String(index + 1)}`;
+  return (
+    <Draggable draggableId={String(item.id)} index={index} type={item.level}>
+      {(provided, snapshot) => (
+        <div>
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style, item.level)}
+          >
+            <div className="line-content" style={{ padding: `0 0 ${grid * 0}px 0` }}>
+              <div className="number-box">{itemNum}</div>
+              <div className="content-box">
+                <TextEdit item={item} handleChange={handleChange} />
+              </div>
+            </div>
+            <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
+              <SubListContainer forId={item.id} parentNum={itemNum} />
+            </div>
           </div>
-          <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
-            <SubListContainer forId={item.id} />
-          </div>
+          {provided.placeholder}
         </div>
-        {provided.placeholder}
-      </div>
-    )}
-  </Draggable>
-);
+      )}
+    </Draggable>
+  );
+};
 
 ListItem.propTypes = {
   item: PropTypes.shape(Schemas.item).isRequired,
   index: PropTypes.number.isRequired,
   handleChange: PropTypes.func.isRequired,
+  parentNum: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   item: state.procedure.list[ownProps.itemId],
   showLevel: state.visibilityFiler,
   index: ownProps.index,
+  parentNum: ownProps.parentNum,
 });
 const mapDispatchToProps = dispatch => ({
   handleChange: (content, itemId) => {
