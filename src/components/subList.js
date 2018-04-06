@@ -20,7 +20,8 @@ const padding = (show, level) => (show ? <div style={getListStyle(false, level)}
 export class SubList extends React.Component {
   render() {
     const { listHolder, showLevel } = this.props;
-    if (true) { // (listHolder.level + 1) <= showLevel) {
+    if (true) {
+      // (listHolder.level + 1) <= showLevel) {
       return (
         <Droppable droppableId={String(listHolder.id)} type={listHolder.level + 1}>
           {(provided, snapshot) => (
@@ -30,9 +31,7 @@ export class SubList extends React.Component {
             >
               {padding(get(listHolder, 'subList', []).length * listHolder.level, listHolder.level)}
               {get(listHolder, 'subList', []).map((i, index) => (
-                <ListItem
-                  key={i} itemId={i} index={index}
-                />
+                <ListItem key={i} itemId={i} index={index} />
               ))}
             </div>
           )}
@@ -50,12 +49,10 @@ export class SubList extends React.Component {
 // handleChange: PropTypes.func.isRequired,
 // };
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    listHolder: state.procedure.list[ownProps.forId],
-    showLevel: state.visibilityFiler,
-  };
-};
+const mapStateToProps = (state, ownProps) => ({
+  listHolder: state.procedure.list[ownProps.forId],
+  showLevel: state.visibilityFiler,
+});
 // const mapDispatchToProps = dispatch => ({
 //   onDragEnd: (result) => {
 //     dispatch(moveItem(result.source, result.destination));
@@ -70,4 +67,3 @@ const SubListContainer = connect(
 )(SubList);
 
 export default SubListContainer;
-

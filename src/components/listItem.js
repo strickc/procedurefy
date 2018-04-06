@@ -29,10 +29,10 @@ const getItemStyle = (isDragging, draggableStyle, level) => ({
 class ListItem extends Component {
   render() {
     const {
-      id, content, index, level,
+      id, content, level,
     } = this.props.item;
     return (
-      <Draggable draggableId={id} index={index} type={level}>
+      <Draggable draggableId={String(id)} index={this.props.index} type={level}>
         {(provided, snapshot) => (
           <div>
             <div
@@ -77,6 +77,7 @@ class ListItem extends Component {
 const mapStateToProps = (state, ownProps) => ({
   item: state.procedure.list[ownProps.itemId],
   showLevel: state.visibilityFiler,
+  index: ownProps.index,
 });
 const mapDispatchToProps = dispatch => ({
   handleChange: (content, itemId) => {

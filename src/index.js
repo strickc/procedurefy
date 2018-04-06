@@ -12,7 +12,8 @@ import { addItem } from './state/actions';
 const store = createStore(procedurefyApp);
 store.dispatch(addItem('Item 1'));
 store.dispatch(addItem('Item 2'));
-console.log(store.getState());
+store.dispatch(addItem('Item 3'));
+store.dispatch(addItem('Item 4'));
 
 ReactDOM.render(
   <Provider store={store}>

@@ -17,11 +17,14 @@ const levels = [
   { text: 'Detail', value: VisibilityFilters.DETAIL },
 ];
 
+function start(p) {
+  console.log(p);
+}
 // eslint-disable-next-line react/prefer-stateless-function
 class MainList extends Component {
   render() {
     return (
-      <DragDropContext onDragEnd={this.props.onDragEnd}>
+      <DragDropContext onDragStart={start} onDragEnd={this.props.onDragEnd}>
         <Dropdown placeholder="Show level" selection options={levels} onChange={this.props.onListChanged} />
         <SubListContainer forId="0" />
       </DragDropContext>
