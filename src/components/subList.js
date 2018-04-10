@@ -1,5 +1,4 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,8 +6,8 @@ import ListItem from './listItem';
 import { levColors } from './helpers/styles';
 import Schemas from './helpers/schemas';
 
-const getListStyle = (isDraggingOver, level) => ({
-  background: isDraggingOver ? 'springgreen' : levColors[level],
+const getListStyle = level => ({
+  background: levColors[level],
   minHeight: '8px',
 });
 
@@ -17,21 +16,14 @@ const getListStyle = (isDraggingOver, level) => ({
 const padding = (show, level) => (show ? <div style={getListStyle(false, level)} /> : null);
 
 export const SubList = ({ listHolder, showLevel, parentNum }) => {
-  if ((listHolder.level + 1) <= showLevel) {
+  if (listHolder.level + 1 <= showLevel) {
     return (
-      <Droppable droppableId={String(listHolder.id)} type={listHolder.level + 1}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver, listHolder.level)}
-          >
-            {padding(get(listHolder, 'subList', []).length * listHolder.level, listHolder.level)}
-            {get(listHolder, 'subList', []).map((i, index) => (
-              <ListItem key={i} itemId={i} index={index} parentNum={parentNum} />
-            ))}
-          </div>
-        )}
-      </Droppable>
+      <div style={getListStyle(listHolder.level)}>
+        {padding(get(listHolder, 'subList', []).length * listHolder.level, listHolder.level)}
+        {get(listHolder, 'subList', []).map((i, index) => (
+          <ListItem key={i} itemId={i} index={index} parentNum={parentNum} />
+        ))}
+      </div>
     );
   }
   // otherwise placeholder for the height for the Droppable
@@ -49,8 +41,6 @@ const mapStateToProps = (state, ownProps) => ({
   showLevel: state.visibilityFilter,
   parentNum: ownProps.parentNum,
 });
-const SubListContainer = connect(
-  mapStateToProps,
-)(SubList);
+const SubListContainer = connect(mapStateToProps)(SubList);
 
 export default SubListContainer;
