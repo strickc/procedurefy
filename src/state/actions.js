@@ -5,6 +5,7 @@
 export const ADD_ITEM = 'ADD_ITEM';
 export const MOVE_ITEM = 'MOVE_ITEM';
 export const SET_CONTENT = 'SET_CONTENT';
+export const SELECT_ITEM = 'SELECT_ITEM';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
 /*
@@ -29,9 +30,15 @@ export function setContent(content, itemId) {
   return { type: SET_CONTENT, content, itemId };
 }
 
-export function moveItem(source, dest) {
+export function moveItem(dir, id, parent) {
   return {
-    type: MOVE_ITEM, source, dest,
+    type: MOVE_ITEM, dir, id, parent,
+  };
+}
+
+export function selectItem(id) {
+  return {
+    type: SELECT_ITEM, id,
   };
 }
 

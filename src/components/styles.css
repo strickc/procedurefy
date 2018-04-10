@@ -7,7 +7,8 @@
 .line-content {
   display: flex;
   flex-wrap: nowrap;
-  align-items: stretch; }
+  align-items: stretch;
+  position: relative; }
   .line-content > .content-box {
     flex-grow: 1;
     padding: 0 0 0 10px; }
@@ -17,3 +18,9 @@
   padding: 0;
   border: none;
   resize: none; }
+
+.item-menu-container {
+  position: absolute;
+  top: -40px;
+  right: -30px;
+  z-index: 10; }

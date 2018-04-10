@@ -21,7 +21,13 @@ export const SubList = ({ listHolder, showLevel, parentNum }) => {
       <div style={getListStyle(listHolder.level)}>
         {padding(get(listHolder, 'subList', []).length * listHolder.level, listHolder.level)}
         {get(listHolder, 'subList', []).map((i, index) => (
-          <ListItem key={i} itemId={i} index={index} parentNum={parentNum} />
+          <ListItem
+            key={i}
+            itemId={i}
+            index={index}
+            parentNum={parentNum}
+            parentId={listHolder.id}
+          />
         ))}
       </div>
     );

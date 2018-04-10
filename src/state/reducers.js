@@ -5,6 +5,7 @@ import {
   ADD_ITEM,
   MOVE_ITEM,
   SET_CONTENT,
+  SELECT_ITEM,
   SET_VISIBILITY_FILTER,
   VisibilityFilters,
 } from './actions';
@@ -31,10 +32,12 @@ const itemGen = (id, state, parentKey, content) => {
 };
 
 const initProcState = {
-  settings: { maxId: 0 },
+  settings: { maxId: 0, selected: null },
   list: {
     0: {
-      id: 0, level: 0, subList: [],
+      id: 0,
+      level: 0,
+      subList: [],
     },
   },
 };
@@ -55,27 +58,21 @@ function procedure(state = initProcState, action) {
       return update(state, uObj);
     }
     case MOVE_ITEM: {
-      const { source, dest } = action;
-      const itemId = state.list[source.droppableId].subList[source.index];
+      const { dir, id, parent } = action;
+      console.log(action);
+      const { subList } = state.list[parent];
+      const index = subList.indexOf(id);
+      const newIndex = index + dir;
+      if ((newIndex) < 0 || newIndex >= subList.length) return state;
       const uObj = {
         list: {
-          [source.droppableId]: {
+          [parent]: {
             subList: {
-              $splice: [[source.index, 1]],
+              $splice: [[index, 1], [newIndex, 0, id]],
             },
           },
         },
       };
-      const dsplice = [dest.index, 0, itemId];
-      if (source.droppableId === dest.droppableId) {
-        uObj.list[source.droppableId].subList.$splice.push(dsplice);
-      } else {
-        uObj.list[dest.droppableId] = {
-          subList: {
-            $splice: [dsplice],
-          },
-        };
-      }
       return update(state, uObj);
     }
     case SET_CONTENT: {
@@ -89,6 +86,9 @@ function procedure(state = initProcState, action) {
           },
         },
       });
+    }
+    case SELECT_ITEM: {
+      return update(state, { settings: { selected: { $set: action.id } } });
     }
     default:
       return state;
