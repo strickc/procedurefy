@@ -8,6 +8,7 @@ import {
   SELECT_ITEM,
   SET_VISIBILITY_FILTER,
   VisibilityFilters,
+  ADD_ITEM_AFTER,
 } from './actions';
 
 const { SECTIONS } = VisibilityFilters;
@@ -57,9 +58,27 @@ function procedure(state = initProcState, action) {
       };
       return update(state, uObj);
     }
+    case ADD_ITEM_AFTER: {
+      const { afterId, parent } = action;
+      const { subList } = state.list[parent];
+      const index = subList.indexOf(afterId);
+      const newId = _.get(state, 'settings.maxId', 1) + 1;
+      const uObj = {
+        list: {
+          [parent]: {
+            subList: {
+              $splice: [[index + 1, 0, newId]],
+            },
+          },
+          [newId]: { $set: itemGen(newId, state, parent, '') },
+        },
+        settings: { maxId: { $set: newId }, selected: { $set: newId } },
+      };
+      console.log(uObj);
+      return update(state, uObj);
+    }
     case MOVE_ITEM: {
       const { dir, id, parent } = action;
-      console.log(action);
       const { subList } = state.list[parent];
       const index = subList.indexOf(id);
       const newIndex = index + dir;

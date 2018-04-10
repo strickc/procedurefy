@@ -1,4 +1,4 @@
-/* globals document */
+/* globals document, window */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -10,7 +10,11 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { addItem } from './state/actions';
 
-const store = createStore(procedurefyApp);
+const store = createStore(
+  procedurefyApp,
+  // eslint-disable-next-line no-underscore-dangle
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
 _.times(30, (i) => {
   store.dispatch(addItem(`Item ${i + 1}`));
   const aparent = store.getState().procedure.settings.maxId;
