@@ -11,9 +11,9 @@
   flex-wrap: nowrap;
   align-items: stretch;
   > .number-box {
-    flex-grow: 1;
   }
   > .content-box {
-    flex-grow: 15;
+    flex-grow: 1;
+    padding: 0 0 0 10px;
   }
 }
