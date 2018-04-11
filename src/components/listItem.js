@@ -6,7 +6,7 @@ import TextEdit from './textEdit';
 import { levColors } from './helpers/styles';
 import Schemas from './helpers/schemas';
 import { setContent, selectItem } from '../state/actions';
-import ItemMenu from './itemMenu';
+// import ItemMenu from './itemMenu';
 
 const grid = 8;
 const getItemStyle = (level, selected) => ({
@@ -55,9 +55,9 @@ class ListItem extends React.Component {
           <div className="content-box">
             <TextEdit item={item} handleChange={handleChange} />
           </div>
-          {this.props.isSelected ? (
+          {/* {this.props.isSelected ? (
             <ItemMenu id={this.props.item.id} parent={this.props.parentId} />
-          ) : null}
+          ) : null} */}
         </div>
         <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
           <SubListContainer forId={item.id} parentNum={itemNum} />

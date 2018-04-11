@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 export const itemSchema = {
   id: PropTypes.number,
+  parent: PropTypes.number,
   content: PropTypes.string,
   level: PropTypes.number,
   subList: PropTypes.array,
