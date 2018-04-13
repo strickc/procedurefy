@@ -11,6 +11,7 @@ import {
   ADD_ITEM_AFTER,
   MOVE_SELECTED,
   ADD_ITEM_AFTER_SELECTED,
+  CLEAR_SELECTION,
 } from './actions';
 
 const { SECTIONS } = VisibilityFilters;
@@ -129,6 +130,9 @@ function procedure(state = initProcState, action) {
     }
     case SELECT_ITEM: {
       return update(state, { settings: { selected: { $set: action.id } } });
+    }
+    case CLEAR_SELECTION: {
+      return update(state, { settings: { selected: { $set: null } } });
     }
     default:
       return state;
