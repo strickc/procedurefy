@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Sidebar, Menu, Popup } from 'semantic-ui-react';
+import { Icon, Menu, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { moveSelected, addItemAfterSelected } from '../state/actions';
+import { moveSelected, addItemAfterSelected, clearSelection, addChild } from '../state/actions';
 
 const items = [
   { icon: 'arrow up', popup: 'Move Item Up', dispatch: 'up' },
@@ -12,18 +12,18 @@ const items = [
 ];
 
 const ItemMenuView = props => (
-  <Sidebar
-    as={Menu}
-    animation="overlay"
-    width="very thin"
-    direction="left"
-    visible={props.visible}
-    icon="labeled"
-    vertical
-    inverted
-  >
+  <div className={`sidebar ${props.visible ? 'show' : 'hide'}`}>
     <Menu fluid inverted icon="labeled" vertical className="">
+      <div style={{ position: 'relative', height: '2em' }}>
+        <Icon
+          inverted
+          style={{ position: 'absolute', right: '0' }}
+          name="remove circle"
+          onClick={props.close}
+          link
+        />
       Options
+      </div>
       {items.map(item => (
         <Popup
           key={item.icon}
@@ -37,24 +37,11 @@ const ItemMenuView = props => (
         />
       ))}
     </Menu>
-    {/* <Button.Group vertical className="">
-      <Button icon onClick={props.up}>
-        <Icon name="arrow up" />
-      </Button>
-      <Button icon onClick={props.down}>
-        <Icon name="arrow down" />
-      </Button>
-      <Button icon onClick={props.add}>
-        <Icon name="add circle" />
-      </Button>
-    </Button.Group> */}
-  </Sidebar>
+  </div>
 );
 ItemMenuView.propTypes = {
   visible: PropTypes.bool.isRequired,
-  // up: PropTypes.func.isRequired,
-  // down: PropTypes.func.isRequired,
-  // add: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   visible: !!state.procedure.settings.selected,
@@ -69,6 +56,9 @@ const mapDispatchToProps = dispatch => ({
   add: (event) => {
     event.stopPropagation();
     dispatch(addItemAfterSelected());
+  },
+  close: () => {
+    dispatch(clearSelection());
   },
 });
 const ItemMenu = connect(mapStateToProps, mapDispatchToProps)(ItemMenuView);

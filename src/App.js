@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Sidebar, Segment } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import './components/styles.css';
@@ -11,14 +11,15 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Sidebar.Pushable as={Segment}>
-          <ItemMenu />
-          <Sidebar.Pusher>
-            <Container>
-              <MainListContainer />
-            </Container>
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
+        {/* <Sidebar.Pushable as={Segment}> */}
+        <ItemMenu />
+        {/* <Sidebar.Pusher> */}
+        <Container>
+          {/* style={{ height: '100vh', overflowY: 'auto' }} */}
+          <MainListContainer />
+        </Container>
+        {/* </Sidebar.Pusher> */}
+        {/* </Sidebar.Pushable> */}
       </div>
     );
   }
