@@ -4,11 +4,19 @@ import { Icon, Menu, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { moveSelected, addItemAfterSelected, clearSelection, addChild } from '../state/actions';
 
-const items = [
-  { icon: 'arrow up', popup: 'Move Item Up', dispatch: 'up' },
-  { icon: 'arrow down', popup: 'Move Item Down', dispatch: 'down' },
-  { icon: 'add circle', popup: 'Add Peer Item', dispatch: 'add' },
-  { icon: 'level down', popup: 'Add Child Item', dispatch: 'addChild' },
+const items = level => [
+  {
+    icon: 'arrow up', popup: 'Move Item Up', dispatch: 'up', disabled: false,
+  },
+  {
+    icon: 'arrow down', popup: 'Move Item Down', dispatch: 'down', disabled: false,
+  },
+  {
+    icon: 'add circle', popup: 'Add Peer Item', dispatch: 'add', disabled: false,
+  },
+  {
+    icon: 'level down', popup: 'Add Child Item', dispatch: 'addChild', disabled: level > 2,
+  },
 ];
 
 const ItemMenuView = props => (
@@ -24,7 +32,7 @@ const ItemMenuView = props => (
         />
         Options
       </div>
-      {items.map(item => (
+      {items(props.selLevel).filter(item => !item.disabled).map(item => (
         <Popup
           key={item.icon}
           trigger={
@@ -42,9 +50,11 @@ const ItemMenuView = props => (
 ItemMenuView.propTypes = {
   visible: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  selLevel: PropTypes.number.isRequired,
 };
-const mapStateToProps = state => ({
-  visible: !!state.procedure.settings.selected,
+const mapStateToProps = ({ procedure }) => ({
+  visible: !!procedure.settings.selected,
+  selLevel: procedure.settings.selected ? procedure.list[procedure.settings.selected].level : -1,
 });
 const mapDispatchToProps = dispatch => ({
   up: () => {
