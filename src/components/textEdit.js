@@ -8,6 +8,10 @@ const getItemStyle = (level, isSelected) => (
   (isSelected ? itemSelected : { background: levColors[level] })
 );
 
+function onKeyDown(event) {
+  if (event.keyCode === 13) event.preventDefault();
+}
+
 class TextEdit extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +55,7 @@ class TextEdit extends Component {
         value={this.state.evalContent ? this.state.evalContent : this.props.item.content}
         style={getItemStyle(this.props.item.level, this.props.isSelected)}
         onChange={this.textUpdate}
+        onKeyDown={onKeyDown}
         ref={this.myText}
         onFocus={this.focus}
         onBlur={this.evalText}
