@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { levColors } from './helpers/styles';
+import { levColors, itemSelected } from './helpers/styles';
 import { itemSchema } from './helpers/schemas';
 
-const getItemStyle = level => ({
-  // change background colour if dragging
-  background: levColors[level],
-});
+const getItemStyle = (level, isSelected) => (
+  (isSelected ? itemSelected : { background: levColors[level] })
+);
 
 class TextEdit extends Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class TextEdit extends Component {
         rows={1}
         className="proc-text"
         defaultValue={this.props.item.content}
-        style={getItemStyle(this.props.item.level)}
+        style={getItemStyle(this.props.item.level, this.props.isSelected)}
         onChange={this.textUpdate}
       />
     );
@@ -32,5 +31,6 @@ class TextEdit extends Component {
 TextEdit.propTypes = {
   item: PropTypes.shape(itemSchema).isRequired,
   handleChange: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
 };
 export default TextEdit;

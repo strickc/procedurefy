@@ -12,52 +12,51 @@ const grid = 8;
 const getItemStyle = (level, selected) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  padding: `${grid}px 0 0 ${grid}px`,
+  padding: `${grid}px 0 ${grid / 2}px ${grid}px`,
   margin: `0 0 ${grid / 4}px 0`,
   border: '1px solid black',
-  borderRadius: '3px',
-  // change background colour if dragging
+  borderRadius: '1px',
   background: selected ? 'lightyellow' : levColors[level],
 });
 
 class ListItem extends React.Component {
   constructor(props) {
     super(props);
-    this.startHover = this.startHover.bind(this);
-    this.endHover = this.endHover.bind(this);
+    // this.startHover = this.startHover.bind(this);
+    // this.endHover = this.endHover.bind(this);
     this.select = this.select.bind(this);
-    this.state = { hover: false };
+    // this.state = { hover: false };
   }
-  startHover() {
-    this.setState({ hover: true });
-  }
-  endHover() {
-    this.setState({ hover: false });
-  }
+  // startHover() {
+  //   this.setState({ hover: true });
+  // }
+  // endHover() {
+  //   this.setState({ hover: false });
+  // }
   select(event) {
     event.stopPropagation();
     this.props.selectItem(this.props.item.id);
   }
   render() {
     const {
-      index, item, handleChange, parentNum,
+      index, item, handleChange, parentNum, isSelected,
     } = this.props;
     const itemNum = `${parentNum}${parentNum.length ? '.' : ''}${String(index + 1)}`;
     return (
       <div
         style={getItemStyle(item.level, this.props.isSelected)}
-        onMouseEnter={this.startHover}
-        onMouseLeave={this.endHover}
+        // onMouseEnter={this.startHover}
+        // onMouseLeave={this.endHover}
         onClick={this.select}
+        onKeyPress={this.select}
+        role="textbox"
+        tabIndex={0}
       >
         <div className="line-content" style={{ padding: `0 0 ${grid * 0}px 0` }}>
           <div className="number-box">{itemNum}</div>
           <div className="content-box">
-            <TextEdit item={item} handleChange={handleChange} />
+            <TextEdit item={item} handleChange={handleChange} isSelected={isSelected} />
           </div>
-          {/* {this.props.isSelected ? (
-            <ItemMenu id={this.props.item.id} parent={this.props.parentId} />
-          ) : null} */}
         </div>
         <div style={{ padding: `0 0 0 ${grid * 0}px` }}>
           <SubListContainer forId={item.id} parentNum={itemNum} />
@@ -70,7 +69,6 @@ class ListItem extends React.Component {
 ListItem.propTypes = {
   item: PropTypes.shape(Schemas.item).isRequired,
   index: PropTypes.number.isRequired,
-  parentId: PropTypes.number.isRequired,
   handleChange: PropTypes.func.isRequired,
   parentNum: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
@@ -82,7 +80,6 @@ const mapStateToProps = (state, ownProps) => ({
   showLevel: state.visibilityFiler,
   index: ownProps.index,
   parentNum: ownProps.parentNum,
-  parentId: ownProps.parentId,
   isSelected: state.procedure.settings.selected === ownProps.itemId,
 });
 const mapDispatchToProps = dispatch => ({

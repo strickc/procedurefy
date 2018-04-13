@@ -8,18 +8,12 @@ import Schemas from './helpers/schemas';
 
 const getListStyle = level => ({
   background: levColors[level],
-  minHeight: '8px',
 });
-
-// const pathIdGen = node => update(node.path, { $push: [node.key] }).join('-');
-
-const padding = (show, level) => (show ? <div style={getListStyle(false, level)} /> : null);
 
 export const SubList = ({ listHolder, showLevel, parentNum }) => {
   if (listHolder.level + 1 <= showLevel) {
     return (
       <div style={getListStyle(listHolder.level)}>
-        {padding(get(listHolder, 'subList', []).length * listHolder.level, listHolder.level)}
         {get(listHolder, 'subList', []).map((i, index) => (
           <ListItem
             key={i}
@@ -32,8 +26,7 @@ export const SubList = ({ listHolder, showLevel, parentNum }) => {
       </div>
     );
   }
-  // otherwise placeholder for the height for the Droppable
-  return padding(true, listHolder.level);
+  return null;
 };
 
 SubList.propTypes = {
