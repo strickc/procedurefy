@@ -12,6 +12,7 @@ import {
   MOVE_SELECTED,
   ADD_ITEM_AFTER_SELECTED,
   CLEAR_SELECTION,
+  ADD_CHILD,
 } from './actions';
 
 const { SECTIONS } = VisibilityFilters;
@@ -65,23 +66,26 @@ function moveItem(state, id, dir) {
   return update(state, uObj);
 }
 
-function addItem(state, afterId) {
-  const { parent } = state.list[afterId];
-  const { subList } = state.list[parent];
-  const index = subList.indexOf(afterId);
+function addItem(state, parent, index = null) {
   const newId = _.get(state, 'settings.maxId', 1) + 1;
+  const op = (index == null ? { $push: [newId] } : { $splice: [[index + 1, 0, newId]] });
   const uObj = {
     list: {
       [parent]: {
-        subList: {
-          $splice: [[index + 1, 0, newId]],
-        },
+        subList: op,
       },
       [newId]: { $set: itemGen(newId, state, parent, '') },
     },
     settings: { maxId: { $set: newId }, selected: { $set: newId } },
   };
   return update(state, uObj);
+}
+
+function addItemAfter(state, afterId) {
+  const { parent } = state.list[afterId];
+  const { subList } = state.list[parent];
+  const index = subList.indexOf(afterId);
+  return addItem(state, parent, index);
 }
 
 function procedure(state = initProcState, action) {
@@ -101,11 +105,15 @@ function procedure(state = initProcState, action) {
     }
     case ADD_ITEM_AFTER: {
       const { afterId } = action;
-      return addItem(state, afterId);
+      return addItemAfter(state, afterId);
+    }
+    case ADD_CHILD: {
+      const { selected } = state.settings;
+      return addItem(state, selected);
     }
     case ADD_ITEM_AFTER_SELECTED: {
       const afterId = state.settings.selected;
-      return addItem(state, afterId);
+      return addItemAfter(state, afterId);
     }
     case MOVE_ITEM: {
       const { dir, id } = action;

@@ -9,6 +9,7 @@ export const SET_CONTENT = 'SET_CONTENT';
 export const SELECT_ITEM = 'SELECT_ITEM';
 export const CLEAR_SELECTION = 'CLEAR_SELECTION';
 export const ADD_ITEM_AFTER = 'ADD_ITEM_AFTER';
+export const ADD_CHILD = 'ADD_CHILD';
 export const ADD_ITEM_AFTER_SELECTED = 'ADD_ITEM_AFTER_SELECTED';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
@@ -55,6 +56,12 @@ export function addItemAfter(afterId, parent) {
 export function addItemAfterSelected() {
   return {
     type: ADD_ITEM_AFTER_SELECTED,
+  };
+}
+
+export function addChild() {
+  return {
+    type: ADD_CHILD,
   };
 }
 

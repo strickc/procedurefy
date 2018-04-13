@@ -22,7 +22,7 @@ const ItemMenuView = props => (
           onClick={props.close}
           link
         />
-      Options
+        Options
       </div>
       {items.map(item => (
         <Popup
@@ -56,6 +56,10 @@ const mapDispatchToProps = dispatch => ({
   add: (event) => {
     event.stopPropagation();
     dispatch(addItemAfterSelected());
+  },
+  addChild: (event) => {
+    event.stopPropagation();
+    dispatch(addChild());
   },
   close: () => {
     dispatch(clearSelection());
