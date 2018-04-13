@@ -7,13 +7,13 @@
     "lodash": "^4.17.5",
     "node-sass-chokidar": "^1.2.2",
     "prop-types": "^15.6.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.1",
     "redux": "^3.7.2",
     "semantic-ui-css": "^2.3.1",
-    "semantic-ui-react": "^0.79.0"
+    "semantic-ui-react": "^0.79.1"
   },
   "scripts": {
     "start-js": "react-scripts start",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "npm-run-all": "^4.1.2",
