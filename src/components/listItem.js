@@ -43,6 +43,8 @@ class ListItem extends React.Component {
     } = this.props;
     const itemNum = `${parentNum}${parentNum.length ? '.' : ''}${String(index + 1)}`;
     return (
+      // disabling because the textbox it contains is the real tabindex
+      // eslint-disable-next-line jsx-a11y/interactive-supports-focus
       <div
         style={getItemStyle(item.level, this.props.isSelected)}
         // onMouseEnter={this.startHover}
@@ -50,7 +52,7 @@ class ListItem extends React.Component {
         onClick={this.select}
         onKeyPress={this.select}
         role="textbox"
-        tabIndex={0}
+        onFocus={this.select}
       >
         <div className="line-content" style={{ padding: `0 0 ${grid * 0}px 0` }}>
           <div className="number-box">{itemNum}</div>

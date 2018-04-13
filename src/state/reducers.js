@@ -33,7 +33,7 @@ const itemGen = (id, state, parentKey, content) => {
     content,
     level: level + 1,
     subList: [],
-    parent: parentKey,
+    parent: Number(parentKey),
   };
 };
 

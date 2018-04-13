@@ -11,6 +11,12 @@ class TextEdit extends Component {
   constructor(props) {
     super(props);
     this.textUpdate = this.textUpdate.bind(this);
+    this.myText = React.createRef();
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.isSelected && !prevProps.isSelected) {
+      this.myText.current.focus();
+    }
   }
   textUpdate(event) {
     const { value } = event.target;
@@ -24,6 +30,7 @@ class TextEdit extends Component {
         defaultValue={this.props.item.content}
         style={getItemStyle(this.props.item.level, this.props.isSelected)}
         onChange={this.textUpdate}
+        ref={this.myText}
       />
     );
   }
