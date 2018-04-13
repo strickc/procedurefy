@@ -13,6 +13,7 @@ import {
   ADD_ITEM_AFTER_SELECTED,
   CLEAR_SELECTION,
   ADD_CHILD,
+  DELETE_SELECTED,
 } from './actions';
 
 const { SECTIONS } = VisibilityFilters;
@@ -53,7 +54,7 @@ function moveItem(state, id, dir) {
   const { subList } = state.list[parent];
   const index = subList.indexOf(id);
   const newIndex = index + dir;
-  if ((newIndex) < 0 || newIndex >= subList.length) return state;
+  if (newIndex < 0 || newIndex >= subList.length) return state;
   const uObj = {
     list: {
       [parent]: {
@@ -68,7 +69,7 @@ function moveItem(state, id, dir) {
 
 function addItem(state, parent, index = null) {
   const newId = _.get(state, 'settings.maxId', 1) + 1;
-  const op = (index == null ? { $push: [newId] } : { $splice: [[index + 1, 0, newId]] });
+  const op = index == null ? { $push: [newId] } : { $splice: [[index + 1, 0, newId]] };
   const uObj = {
     list: {
       [parent]: {
@@ -141,6 +142,28 @@ function procedure(state = initProcState, action) {
     }
     case CLEAR_SELECTION: {
       return update(state, { settings: { selected: { $set: null } } });
+    }
+    case DELETE_SELECTED: {
+      const id = state.settings.selected;
+      const { parent, subList } = state.list[id];
+      const allSubs = subList.reduce((p, c) => p.concat(state.list[c].subList), subList);
+      const index = state.list[parent].subList.indexOf(id);
+      const newSel = (() => {
+        const pSubList = state.list[parent].subList;
+        if (pSubList.length > index + 1) {
+          return pSubList[index + 1];
+        } else if (pSubList.length > 1) {
+          return pSubList[index - 1];
+        }
+        return parent;
+      })();
+      return update(state, {
+        list: {
+          $unset: [id, allSubs],
+          [parent]: { subList: { $splice: [[index, 1]] } },
+        },
+        settings: { selected: { $set: newSel } },
+      });
     }
     default:
       return state;

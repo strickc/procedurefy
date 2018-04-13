@@ -12,6 +12,7 @@ export const ADD_ITEM_AFTER = 'ADD_ITEM_AFTER';
 export const ADD_CHILD = 'ADD_CHILD';
 export const ADD_ITEM_AFTER_SELECTED = 'ADD_ITEM_AFTER_SELECTED';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+export const DELETE_SELECTED = 'DELETE_SELECTED';
 
 /*
  * other constants
@@ -74,6 +75,12 @@ export function selectItem(id) {
 export function clearSelection() {
   return {
     type: CLEAR_SELECTION,
+  };
+}
+
+export function deleteSelected() {
+  return {
+    type: DELETE_SELECTED,
   };
 }
 

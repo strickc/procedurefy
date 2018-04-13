@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Menu, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { moveSelected, addItemAfterSelected, clearSelection, addChild } from '../state/actions';
+import { moveSelected, addItemAfterSelected, clearSelection, addChild, deleteSelected } from '../state/actions';
 
 const items = level => [
   {
@@ -16,6 +16,9 @@ const items = level => [
   },
   {
     icon: 'level down', popup: 'Add Child Item', dispatch: 'addChild', disabled: level > 2,
+  },
+  {
+    icon: 'delete', popup: 'Delete Item', dispatch: 'deleteSelected', disabled: false,
   },
 ];
 
@@ -73,6 +76,9 @@ const mapDispatchToProps = dispatch => ({
   },
   close: () => {
     dispatch(clearSelection());
+  },
+  deleteSelected: () => {
+    dispatch(deleteSelected());
   },
 });
 const ItemMenu = connect(mapStateToProps, mapDispatchToProps)(ItemMenuView);
