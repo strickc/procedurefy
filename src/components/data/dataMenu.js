@@ -1,12 +1,13 @@
 import React from 'react';
 import { Menu, Segment } from 'semantic-ui-react';
+import DataNode from './dataNode';
 
-const items = [{ name: 'Well', color: 'red' }, { name: 'Sections', color: 'blue' }];
+const items = [{ name: 'Well', color: 'red' }, { name: 'Rig', color: 'purpule' }, { name: 'Sections', color: 'blue' }];
 
-class DataEntry extends React.Component {
+class DataMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { activeItem: items[1].name };
+    this.state = { activeItem: items[0].name };
     this.menuClick = this.menuClick.bind(this);
   }
   menuClick(event, { name }) {
@@ -26,9 +27,10 @@ class DataEntry extends React.Component {
             />
           ))}
         </Menu>
+        <DataNode />
       </Segment>
     );
   }
 }
 
-export default DataEntry;
+export default DataMenu;

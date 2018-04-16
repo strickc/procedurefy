@@ -6,7 +6,7 @@ import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import './components/styles.css';
 import MainListContainer from './components/containers/mainList';
-import DataEntry from './components/data/dataEntry';
+import DataEntry from './components/data/dataMenu';
 import TopMenu from './components/topMenu';
 import { Views } from './state/actions';
 
