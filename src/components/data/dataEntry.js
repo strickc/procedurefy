@@ -31,19 +31,4 @@ class DataEntry extends React.Component {
   }
 }
 
-// MainList.propTypes = {
-//   onListChanged: PropTypes.func.isRequired,
-//   visibilityFilter: PropTypes.number.isRequired,
-// };
-
-// const mapStateToProps = state => ({
-//   visibilityFilter: state.visibilityFilter,
-// });
-// const mapDispatchToProps = dispatch => ({
-//   onListChanged: (event, data) => {
-//     dispatch(setVisibilityFilter(data.value));
-//   },
-// });
-// const MainListContainer = connect(mapStateToProps, mapDispatchToProps)(MainList);
-
 export default DataEntry;
