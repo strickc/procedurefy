@@ -11,8 +11,10 @@ export const CLEAR_SELECTION = 'CLEAR_SELECTION';
 export const ADD_ITEM_AFTER = 'ADD_ITEM_AFTER';
 export const ADD_CHILD = 'ADD_CHILD';
 export const ADD_ITEM_AFTER_SELECTED = 'ADD_ITEM_AFTER_SELECTED';
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 export const DELETE_SELECTED = 'DELETE_SELECTED';
+
+export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+export const SET_VIEW = 'SET_VIEW';
 
 /*
  * other constants
@@ -22,6 +24,11 @@ export const VisibilityFilters = {
   SECTIONS: 1,
   STEPS: 2,
   DETAIL: 3,
+};
+
+export const Views = {
+  PROCEDURE: 'PROCEDURE',
+  DATA: 'DATA',
 };
 
 /*
@@ -86,4 +93,8 @@ export function deleteSelected() {
 
 export function setVisibilityFilter(filter) {
   return { type: SET_VISIBILITY_FILTER, filter };
+}
+
+export function setView(view) {
+  return { type: SET_VIEW, view };
 }

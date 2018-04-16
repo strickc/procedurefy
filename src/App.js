@@ -1,32 +1,44 @@
 import React, { Component } from 'react';
-import { Container, Segment } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import './components/styles.css';
 import MainListContainer from './components/containers/mainList';
-import ItemMenu from './components/itemMenu';
+import DataEntry from './components/data/dataEntry';
 import TopMenu from './components/topMenu';
+import { Views } from './state/actions';
+
+const curView = (view) => {
+  switch (view) {
+    case Views.PROCEDURE:
+      return <MainListContainer />;
+    case Views.DATA:
+      return <DataEntry />;
+    default:
+      break;
+  }
+  return null;
+};
 
 // eslint-disable-next-line react/prefer-stateless-function
-class App extends Component {
+class AppView extends Component {
   render() {
     return (
       <div className="App">
         <TopMenu />
-        <Segment>
-          {/* <Sidebar.Pushable as={Segment}> */}
-          <ItemMenu />
-          {/* <Sidebar.Pusher> */}
-          <Container>
-            {/* style={{ height: '100vh', overflowY: 'auto' }} */}
-            <MainListContainer />
-          </Container>
-          {/* </Sidebar.Pusher> */}
-          {/* </Sidebar.Pushable> */}
-        </Segment>
+        <Container>{curView(this.props.view)}</Container>
       </div>
     );
   }
 }
+AppView.propTypes = {
+  view: PropTypes.string.isRequired,
+};
+
+const App = connect(state => ({
+  view: state.view,
+}))(AppView);
 
 export default App;

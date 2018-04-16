@@ -8,20 +8,32 @@ import {
   SELECT_ITEM,
   SET_VISIBILITY_FILTER,
   VisibilityFilters,
+  Views,
   ADD_ITEM_AFTER,
   MOVE_SELECTED,
   ADD_ITEM_AFTER_SELECTED,
   CLEAR_SELECTION,
   ADD_CHILD,
   DELETE_SELECTED,
+  SET_VIEW,
 } from './actions';
 
 const { SECTIONS } = VisibilityFilters;
+const { DATA } = Views;
 
 function visibilityFilter(state = SECTIONS, action) {
   switch (action.type) {
     case SET_VISIBILITY_FILTER:
       return action.filter;
+    default:
+      return state;
+  }
+}
+
+function view(state = DATA, action) {
+  switch (action.type) {
+    case SET_VIEW:
+      return action.view;
     default:
       return state;
   }
@@ -172,6 +184,7 @@ function procedure(state = initProcState, action) {
 
 const procedurefyApp = combineReducers({
   visibilityFilter,
+  view,
   procedure,
 });
 
