@@ -1,13 +1,15 @@
 import React from 'react';
 import { Menu, Segment } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import DataNode from './dataNode';
 
-const items = [{ name: 'Well', color: 'red' }, { name: 'Rig', color: 'purpule' }, { name: 'Sections', color: 'blue' }];
+const colors = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
 
-class DataMenu extends React.Component {
+class DataMenuView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { activeItem: items[0].name };
+    this.state = { activeItem: props.categories[0] };
     this.menuClick = this.menuClick.bind(this);
   }
   menuClick(event, { name }) {
@@ -17,20 +19,33 @@ class DataMenu extends React.Component {
     return (
       <Segment>
         <Menu pointing secondary>
-          {items.map(item => (
+          {this.props.categories.map((cat, i) => (
             <Menu.Item
-              key={item.name}
-              name={item.name}
-              color={item.color}
-              active={this.state.activeItem === item.name}
+              key={cat}
+              name={cat}
+              color={colors[i]}
+              active={this.state.activeItem === cat}
               onClick={this.menuClick}
             />
           ))}
         </Menu>
-        <DataNode />
+        <DataNode category={this.state.activeItem} />
       </Segment>
     );
   }
 }
+DataMenuView.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+const mapStateToProps = state => ({
+  categories: Object.keys(state.data),
+});
+// const mapDispatchToProps = dispatch => ({
+  // onListChanged: (event, data) => {
+  //   dispatch(setVisibilityFilter(data.value));
+  // },
+// });
+const DataMenu = connect(mapStateToProps, null)(DataMenuView);
 
 export default DataMenu;

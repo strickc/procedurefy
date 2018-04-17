@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import './components/styles.css';
-import MainListContainer from './components/containers/mainList';
+import MainList from './components/containers/mainList';
 import DataEntry from './components/data/dataMenu';
 import TopMenu from './components/topMenu';
 import { Views } from './state/actions';
@@ -13,7 +13,7 @@ import { Views } from './state/actions';
 const curView = (view) => {
   switch (view) {
     case Views.PROCEDURE:
-      return <MainListContainer />;
+      return <MainList />;
     case Views.DATA:
       return <DataEntry />;
     default:

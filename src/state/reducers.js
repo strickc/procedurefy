@@ -17,6 +17,7 @@ import {
   DELETE_SELECTED,
   SET_VIEW,
 } from './actions';
+import data from './data/dataReducers';
 
 const { SECTIONS } = VisibilityFilters;
 const { DATA } = Views;
@@ -186,6 +187,7 @@ const procedurefyApp = combineReducers({
   visibilityFilter,
   view,
   procedure,
+  data,
 });
 
 export default procedurefyApp;

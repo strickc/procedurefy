@@ -12,7 +12,7 @@ const levels = [
   { text: 'Detail', value: VisibilityFilters.DETAIL },
 ];
 
-const MainList = props => (
+const MainListView = props => (
   <div>
     <Segment>
       <Dropdown
@@ -28,7 +28,7 @@ const MainList = props => (
   </div>
 );
 
-MainList.propTypes = {
+MainListView.propTypes = {
   onListChanged: PropTypes.func.isRequired,
   visibilityFilter: PropTypes.number.isRequired,
 };
@@ -41,6 +41,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setVisibilityFilter(data.value));
   },
 });
-const MainListContainer = connect(mapStateToProps, mapDispatchToProps)(MainList);
+const MainList = connect(mapStateToProps, mapDispatchToProps)(MainListView);
 
-export default MainListContainer;
+export default MainList;

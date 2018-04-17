@@ -9,6 +9,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { addItem } from './state/actions';
+import { addDataCategory, addSubdata } from './state/data/dataActions';
 
 const store = createStore(
   procedurefyApp,
@@ -26,6 +27,12 @@ _.times(30, (i) => {
     });
   });
 });
+store.dispatch(addDataCategory('Well'));
+store.dispatch(addDataCategory('Rig'));
+store.dispatch(addSubdata('Well', 'Well Name', 'WellName', '', ''));
+store.dispatch(addSubdata('Well', 'Rig', 'RigName', '', ''));
+store.dispatch(addSubdata('Well', 'Planned Depth MD', 'PlannedDepthMD', 'm MD', ''));
+store.dispatch(addSubdata('Well', 'Planned Depth TVD', 'PlannedDepthTVD', 'm TVD', ''));
 
 ReactDOM.render(
   <Provider store={store}>
